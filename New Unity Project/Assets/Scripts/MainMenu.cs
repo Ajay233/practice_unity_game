@@ -8,6 +8,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private AudioClip _audioClip;
     private AudioSource _audioSource;
     private AudioSource _canvasAudio;
+    private Animator _transitionAnimator;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,17 +23,20 @@ public class MainMenu : MonoBehaviour
         {
             Debug.LogError("Unable to find canvas Audio Source");
         }
+
+        _transitionAnimator = GameObject.Find("TransitionManager").GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void SinglePlayer()
     {
-        SceneManager.LoadScene(1);
+        StartCoroutine(GoToNextScene());
     }
 
     public void MultiPlayer()
@@ -47,5 +51,12 @@ public class MainMenu : MonoBehaviour
         _audioSource.Play();
         yield return new WaitForSeconds(3.2f);
         _canvasAudio.Play();
+    }
+
+    IEnumerator GoToNextScene()
+    {
+        _transitionAnimator.SetTrigger("OnSceneLeave");
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(1);
     }
 }
