@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d75da1279ae0811408e5fc8ff6bc6006, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerTileList: []
+  _enemyTileList: []
+  _ship: {fileID: 5213228951790551118, guid: 31391bf84ab4a6941a8af57a98ffab58, type: 3}

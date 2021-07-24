@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private GameManager _gameManager;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        if (_gameManager == null)
+        {
+            Debug.LogError("Unable to find Game Manager");
+        }
     }
 
     void OnMouseDown()
     {
         Debug.Log("Well well well");
-        Destroy(this.gameObject);
+        // Add condition to check if there's already a ship.  If yes, destroy the ship object
+        // else
+        // Add condition to only add 5 for player if we're on scene 1
+        _gameManager.SpawnShip(this);
     }
 }
