@@ -39,6 +39,11 @@ public class MainMenu : MonoBehaviour
         StartCoroutine(GoToNextScene());
     }
 
+    public void TempButton()
+    {
+        StartCoroutine(GoToNextSceneV2());
+    }
+
     public void MultiPlayer()
     {
         _audioSource.clip = _audioClip;
@@ -58,5 +63,12 @@ public class MainMenu : MonoBehaviour
         _transitionAnimator.SetTrigger("OnSceneLeave");
         yield return new WaitForSeconds(2f);
         SceneManager.LoadScene(1);
+    }
+
+    IEnumerator GoToNextSceneV2()
+    {
+        _transitionAnimator.SetTrigger("OnSceneLeave");
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(3);
     }
 }
