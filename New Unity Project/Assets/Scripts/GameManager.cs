@@ -9,8 +9,11 @@ public class GameManager : MonoBehaviour
     // or set them on fire, whatever lol
     [SerializeField] private Tile[] _enemyTileList;
     [SerializeField] private GameObject _ship;
+    [SerializeField] private int _shipLimit;
 
     private GameManager _gameManager;
+
+    private int _playerShipCount = 0;
 
     private void Awake()
     {
@@ -27,7 +30,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
     // Update is called once per frame
@@ -36,11 +39,25 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void SpawnShip(Tile tile)
+    public bool PlayerShipCountAtMax()
     {
-        Instantiate(_ship, tile.transform.position, Quaternion.identity, tile.transform);
+        return _playerShipCount == _shipLimit;
     }
 
+    public void SpawnShip(Tile tile)
+    {
+        if (_playerShipCount < _shipLimit)
+        {
+            Instantiate(_ship, tile.transform.position, Quaternion.identity, tile.transform);
+            _playerShipCount++;
+            Debug.Log("PlayerShips = " + _playerShipCount);
+        } 
+    }
+
+    public void DecreasePlayerShipCount()
+    {
+        _playerShipCount--;
+    }
 
     // Need to create a ship prefab
     // Add a serialized field for ship and drag in the ship prefab
@@ -48,14 +65,14 @@ public class GameManager : MonoBehaviour
 
     // PLAYER SETUP
 
-    // Player must click 5 squares
+    // Player must click 5 squares - done
 
-    // Each time a player clicks a square && player has not clicked 5 times, add ship prefab as a child
+    // Each time a player clicks a square && player has not clicked 5 times, add ship prefab as a child - done
 
     // If a player clicks a square that has a ship prefab child, remove the ship prefab child & increase 
-    // number of clicks allowed by one
+    // number of clicks allowed by one - done
 
-    // Disable button until player has applied ships to 5 squares
+    // Disable button until player has applied ships to 5 squares - done
 
 
 
