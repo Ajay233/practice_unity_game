@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    private int width = 10;
+    private int width = 6;
     private int height = 10;
     private int[,] gridArr;
     [SerializeField]
