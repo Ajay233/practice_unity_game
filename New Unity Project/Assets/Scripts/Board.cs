@@ -9,16 +9,18 @@ public class Board : MonoBehaviour
     private int[,] gridArr;
     [SerializeField]
     GameObject tile;
-
+    private GameManager gameManager;
     // Start is called before the first frame update
     void Start()
     {
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gridArr = new int[width, height];
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                Instantiate(tile, new Vector3(x, y, 0), Quaternion.identity);
+                GameObject tileCopy = Instantiate(tile, new Vector3(x, y, 0), Quaternion.identity);
+                gameManager.AddPlayerTileToList(tileCopy);
             }
         }
     }

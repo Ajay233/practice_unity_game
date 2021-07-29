@@ -15,6 +15,8 @@ public class Tile : MonoBehaviour
         {
             Debug.LogError("Unable to find Game Manager");
         }
+
+        // Wrapper if statement can be removed if we stick with one scene for both setup and playing a game
         if (SceneManager.GetActiveScene().buildIndex == 1) {
             _singlePlayerSetupCanvas = GameObject.Find("SinglePlayerSetupCanvas").GetComponent<SinglePlayerSetupCanvas>();
             if (_singlePlayerSetupCanvas == null)
@@ -23,12 +25,16 @@ public class Tile : MonoBehaviour
             }
         }
     }
-    // This will need to be used only in scene 1
+    
     void OnMouseDown()
     {
-        Debug.Log("Well well well");
-        SpawnShips();
-        ShowOrHidePlayButton();
+        if (_gameManager.GameStarted())
+        {
+            PlayerMove();
+        } else
+        {
+            PlayerSetup();
+        }
     }
 
     void SpawnShips()
@@ -54,5 +60,17 @@ public class Tile : MonoBehaviour
         {
             _singlePlayerSetupCanvas.HidePlayButton();
         }
+    }
+
+    void PlayerSetup()
+    {
+        Debug.Log("Well well well");
+        SpawnShips();
+        ShowOrHidePlayButton();
+    }
+
+    void PlayerMove()
+    {
+        Debug.Log("Steven... This is Clem Fandango.... Can you hear me?");
     }
 }
