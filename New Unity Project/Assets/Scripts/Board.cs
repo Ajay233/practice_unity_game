@@ -5,29 +5,41 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     private int width = 6;
-    private int height = 10;
+    private int height = 6;
     private int[,] gridArr;
     [SerializeField]
     GameObject tile;
     private GameManager gameManager;
-    // Start is called before the first frame update
+    Vector3 tile_vector;
+
     void Start()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        Camera cam = Camera.main;
+        // height and width are amount of objects of size '1' that fit - this is for positioning
+         float height = 2f * cam.orthographicSize;
+         float width = height * cam.aspect;
+        createBoard();
+        // Getting size of tile for vector3 calculation in loop - needs looking at
+        Renderer render = tile.GetComponent<Renderer>();
+        float tile_vector = render.bounds.size.x;
+
+    }    
+    int[,] createBoard()
+    {
         gridArr = new int[width, height];
+        int tileCount = 0;
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
-                GameObject tileCopy = Instantiate(tile, new Vector3(x, y, 0), Quaternion.identity);
-                gameManager.AddPlayerTileToList(tileCopy);
+                GameObject createdTile = Instantiate(tile, new Vector3(x * 1.42f, y * 1.42f, 0), Quaternion.identity);
+                gameManager.AddPlayerTileToList(createdTile);
+                createdTile.transform.SetParent(this.transform);
+                createdTile.name = "Tile " + tileCount.ToString();
+                tileCount++;
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        return gridArr;
     }
 }
