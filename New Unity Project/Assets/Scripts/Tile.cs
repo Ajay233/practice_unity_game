@@ -28,13 +28,7 @@ public class Tile : MonoBehaviour
     
     void OnMouseDown()
     {
-        if (_gameManager.GameStarted())
-        {
-            PlayerMove();
-        } else
-        {
-            PlayerSetup();
-        }
+         PlayerSetup();
     }
 
     void SpawnShips()
@@ -64,13 +58,7 @@ public class Tile : MonoBehaviour
 
     void PlayerSetup()
     {
-        Debug.Log("Well well well");
         SpawnShips();
         ShowOrHidePlayButton();
-    }
-
-    void PlayerMove()
-    {
-        Debug.Log("Steven... This is Clem Fandango.... Can you hear me?");
     }
 }

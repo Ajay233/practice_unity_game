@@ -33,9 +33,8 @@ public class Board : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                GameObject createdTile = Instantiate(tile, new Vector3(x * 1.42f, y * 1.42f, 0), Quaternion.identity);
-                gameManager.AddPlayerTileToList(createdTile);
-                createdTile.transform.SetParent(this.transform);
+                GameObject createdTile = Instantiate(tile, new Vector3(x * 1.42f, y * 1.42f, 0), Quaternion.identity, this.transform);
+                gameManager.AddTileToCorrectList(createdTile);
                 createdTile.name = "Tile " + tileCount.ToString();
                 tileCount++;
             }

@@ -26,10 +26,10 @@ public class SinglePlayerSetupCanvas : MonoBehaviour
 
     public void GoToNextScene()
     {
-        //SceneManager.LoadScene(2);  //<-- This may no longer be needed if we just use the one scene?
-        _gameManager.StartGame();
-        transform.GetComponent<AudioSource>().Play();
-        // If we use the same scene, we can add a line here to hide the button again
+        _gameManager.ToggleStartGame();
+        _gameManager.ToggleTurn();
+        //transform.GetComponent<AudioSource>().Play();
+        HidePlayButton();
     }
 
     public void DisplayPlayButton()
