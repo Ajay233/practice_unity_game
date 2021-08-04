@@ -9,12 +9,12 @@ public class Board : MonoBehaviour
     private int[,] gridArr;
     [SerializeField]
     GameObject tile;
-    private GameManager gameManager;
+    private GameManager _gameManager;
     Vector3 tile_vector;
 
     void Start()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         Camera cam = Camera.main;
         // height and width are amount of objects of size '1' that fit - this is for positioning
          float height = 2f * cam.orthographicSize;
@@ -34,7 +34,7 @@ public class Board : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 GameObject createdTile = Instantiate(tile, new Vector3(x * 1.42f, y * 1.42f, 0), Quaternion.identity, this.transform);
-                gameManager.AddTileToCorrectList(createdTile);
+                _gameManager.AddTileToCorrectList(createdTile);
                 createdTile.name = "Tile " + tileCount.ToString();
                 tileCount++;
             }

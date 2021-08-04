@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Tile : MonoBehaviour
 {
-    private GameManager _gameManager;
+    public GameManager _gameManager;
     private SinglePlayerSetupCanvas _singlePlayerSetupCanvas;
 
     private void Start()
@@ -28,7 +28,10 @@ public class Tile : MonoBehaviour
     
     void OnMouseDown()
     {
-         PlayerSetup();
+        if (!_gameManager.GameStarted())
+        {
+            PlayerSetup();
+        }
     }
 
     void SpawnShips()
