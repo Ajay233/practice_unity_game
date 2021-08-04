@@ -6,17 +6,19 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _playerTileList = new List<GameObject>();
     [SerializeField] private List<GameObject> _enemyTileList = new List<GameObject>();
+    [SerializeField] private List<int> _playerTilesAttacked = new List<int>();
     [SerializeField] private GameObject _playerBoard;
     [SerializeField] private GameObject _EnemyBoard;
     [SerializeField] private GameObject _ship;
     [SerializeField] private int _shipLimit;
     [SerializeField] GameObject _missedPrefab;
     [SerializeField] GameObject _hitPrefab;
+    private TurnTransition _playerTurnTransition;
+    private TurnTransition _enemyTurnTransition;
     private GameManager _gameManager;
     private SinglePlayerSetupCanvas _singlePlayerSetupCanvas;
     private int _playerShipCount = 0;
     private int _enemyShipCount = 0;
-    [SerializeField] private List<int> _playerTilesAttacked = new List<int>();
     bool _gameStart = false;
     private bool _playerTurn = false;
 
@@ -39,6 +41,9 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Unable to find SinglePlayerSetupCanvas");
         }
+
+        _playerTurnTransition = GameObject.Find("PlayerTurnTransition").GetComponent<TurnTransition>();
+        _enemyTurnTransition = GameObject.Find("EnemyTurnTransition").GetComponent<TurnTransition>();
     }
 
     public bool PlayerShipCountAtMax()
@@ -79,7 +84,7 @@ public class GameManager : MonoBehaviour
         // on when we add in animations we want to wait for etc.
         if (!_playerTurn)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(3f);
         }
         if (tileList[index].transform.childCount == 0)
         {
@@ -95,7 +100,13 @@ public class GameManager : MonoBehaviour
             Instantiate(_hitPrefab, tileList[index].transform.position, Quaternion.identity, tileList[index].transform);
             DecrementShipList(tileList);
         }
-        yield return new WaitForSeconds(1.5f);
+        if (!_playerTurn)
+        {
+            yield return new WaitForSeconds(1.5f);
+        } else
+        {
+            yield return new WaitForSeconds(0.8f);
+        }
         ToggleTurn();
     }
 
@@ -149,20 +160,33 @@ public class GameManager : MonoBehaviour
         return _gameStart;
     }
 
+    IEnumerator playerBoardRoutine()
+    {
+        yield return new WaitForSeconds(2);
+        _playerTurn = false;
+        _EnemyBoard.SetActive(false);
+        _playerBoard.SetActive(true);
+        EnemyMove();
+    }
+
+    IEnumerator EnemyBoardRoutine()
+    {
+        yield return new WaitForSeconds(2);
+        _playerTurn = true;
+        _playerBoard.SetActive(false);
+        _EnemyBoard.SetActive(true);
+    }
+
     public void ToggleTurn()
     {
         if (_playerTurn == true)
         {
-            _playerTurn = false;
-            _EnemyBoard.SetActive(false);
-            _playerBoard.SetActive(true);
-            EnemyMove();
+            _enemyTurnTransition.PlayTransition();
+            StartCoroutine(playerBoardRoutine());
         } else
         {
-            _playerTurn = true;
-            _playerBoard.SetActive(false);
-            _EnemyBoard.SetActive(true);
-
+            _playerTurnTransition.PlayTransition();
+            StartCoroutine(EnemyBoardRoutine());
         }
 
         Debug.Log("Player turn set to: " + _playerTurn);

@@ -51,4 +51,5 @@ public class TransitionManager : MonoBehaviour
         yield return new WaitForSeconds(3);
         _transitionAnimator.ResetTrigger("OnSceneEnter");
     }
+
 }
