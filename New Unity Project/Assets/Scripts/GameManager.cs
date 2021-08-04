@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     private TurnTransition _playerTurnTransition;
     private TurnTransition _enemyTurnTransition;
     private GameManager _gameManager;
-    private SinglePlayerSetupCanvas _singlePlayerSetupCanvas;
+    private SinglePlayerSetupCanvas _singlePlayerSetupCanvasVar;
     private int _playerShipCount = 0;
     private int _enemyShipCount = 0;
     bool _gameStart = false;
@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        _singlePlayerSetupCanvas = GameObject.Find("SinglePlayerSetupCanvas").GetComponent<SinglePlayerSetupCanvas>();
-        if (_singlePlayerSetupCanvas == null)
+        _singlePlayerSetupCanvasVar = GameObject.Find("SinglePlayerSetupCanvas").GetComponent<SinglePlayerSetupCanvas>();
+        if (_singlePlayerSetupCanvasVar == null)
         {
             Debug.LogError("Unable to find SinglePlayerSetupCanvas");
         }
@@ -100,13 +100,6 @@ public class GameManager : MonoBehaviour
             Instantiate(_hitPrefab, tileList[index].transform.position, Quaternion.identity, tileList[index].transform);
             DecrementShipList(tileList);
         }
-        if (!_playerTurn)
-        {
-            yield return new WaitForSeconds(1.5f);
-        } else
-        {
-            yield return new WaitForSeconds(0.8f);
-        }
         ToggleTurn();
     }
 
@@ -162,8 +155,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator playerBoardRoutine()
     {
+        yield return new WaitForSeconds(0.8f);
+        _playerTurnTransition.PlayTransition();
         yield return new WaitForSeconds(2);
-        _playerTurn = false;
         _EnemyBoard.SetActive(false);
         _playerBoard.SetActive(true);
         EnemyMove();
@@ -171,8 +165,9 @@ public class GameManager : MonoBehaviour
 
     IEnumerator EnemyBoardRoutine()
     {
-        yield return new WaitForSeconds(2);
-        _playerTurn = true;
+        yield return new WaitForSeconds(1.5f);
+        _playerTurnTransition.PlayTransition();
+        yield return new WaitForSeconds(2f);
         _playerBoard.SetActive(false);
         _EnemyBoard.SetActive(true);
     }
@@ -181,11 +176,11 @@ public class GameManager : MonoBehaviour
     {
         if (_playerTurn == true)
         {
-            _enemyTurnTransition.PlayTransition();
+            _playerTurn = false;
             StartCoroutine(playerBoardRoutine());
         } else
         {
-            _playerTurnTransition.PlayTransition();
+            _playerTurn = true;
             StartCoroutine(EnemyBoardRoutine());
         }
 
@@ -201,7 +196,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Stopping game");
         _gameStart = false;
-        _singlePlayerSetupCanvas.transform.GetChild(1).gameObject.SetActive(true);
+        _singlePlayerSetupCanvasVar.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     // Need to create a ship prefab
