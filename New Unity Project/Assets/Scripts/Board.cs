@@ -23,6 +23,7 @@ public class Board : MonoBehaviour
         // Getting size of tile for vector3 calculation in loop - needs looking at
         Renderer render = tile.GetComponent<Renderer>();
         float tile_vector = render.bounds.size.x;
+        transform.position = new Vector3(-3.5f, -4.0f, 0);
 
     }    
     int[,] createBoard()
@@ -39,6 +40,12 @@ public class Board : MonoBehaviour
                 tileCount++;
             }
         }
+
+        if (gameObject.tag == "EnemyBoard")
+        {
+            _gameManager.DeployEnemyFleet();
+        }
+
         return gridArr;
     }
 }

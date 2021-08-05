@@ -97,17 +97,21 @@ public class GameManager : MonoBehaviour
             // option2 - Another option could be to animate explosion, overlay fire
 
             // Temp solution below so we can visualise enemy hits on player ships
+            if (_playerTurn)
+            {
+                tileList[index].transform.GetChild(0).gameObject.SetActive(true);
+            }
             Instantiate(_hitPrefab, tileList[index].transform.position, Quaternion.identity, tileList[index].transform);
             DecrementShipList(tileList);
         }
-        ToggleTurn();
+        CheckGameOver();
     }
 
     void DecrementShipList(List<GameObject> tileList)
     {
         if (tileList == _enemyTileList)
         {
-            //_enemyShipCount--;
+            _enemyShipCount--;
         } else
         {
             _playerShipCount--;
@@ -116,7 +120,7 @@ public class GameManager : MonoBehaviour
 
     public void EnemyMove()
     {
-        int index = GetUnusedRandomNumber();
+        int index = GetUnusedRandomNumber(_playerTilesAttacked);
         StartCoroutine(SlowTurnVisualisation(_playerTileList, index));
     }
 
@@ -126,14 +130,14 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SlowTurnVisualisation(_enemyTileList, index));
     }
 
-    int GetUnusedRandomNumber()
+    int GetUnusedRandomNumber(List<int> list)
     {
         int num = Random.Range(0, 36);
-        while (_playerTilesAttacked.Contains(num))
+        while (list.Contains(num))
         {
             num = Random.Range(0, 36);
         }
-        _playerTilesAttacked.Add(num); //Keep track of what tiles have been selected
+        list.Add(num); //Keep track of what tiles have been selected
         return num;
     }
 
@@ -156,8 +160,10 @@ public class GameManager : MonoBehaviour
     IEnumerator playerBoardRoutine()
     {
         yield return new WaitForSeconds(0.8f);
-        _playerTurnTransition.PlayTransition();
+        _enemyTurnTransition.PlayTransition();
         yield return new WaitForSeconds(2);
+        _singlePlayerSetupCanvasVar.transform.GetChild(5).gameObject.SetActive(true);
+        _singlePlayerSetupCanvasVar.transform.GetChild(4).gameObject.SetActive(false);
         _EnemyBoard.SetActive(false);
         _playerBoard.SetActive(true);
         EnemyMove();
@@ -168,6 +174,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         _playerTurnTransition.PlayTransition();
         yield return new WaitForSeconds(2f);
+        _singlePlayerSetupCanvasVar.transform.GetChild(4).gameObject.SetActive(true);
+        _singlePlayerSetupCanvasVar.transform.GetChild(5).gameObject.SetActive(false);
         _playerBoard.SetActive(false);
         _EnemyBoard.SetActive(true);
     }
@@ -192,11 +200,42 @@ public class GameManager : MonoBehaviour
         return _playerTurn;
     }
 
+    void CheckGameOver()
+    {
+        if(_playerShipCount == 0)
+        {
+            PlayerLose();
+        } else if (_enemyShipCount == 0)
+        {
+            PlayerWin();
+        } else
+        {
+            ToggleTurn();
+        }
+    }
+
     void PlayerLose()
     {
-        Debug.Log("Stopping game");
         _gameStart = false;
         _singlePlayerSetupCanvasVar.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    void PlayerWin()
+    {
+        _gameStart = false;
+        _singlePlayerSetupCanvasVar.transform.GetChild(2).gameObject.SetActive(true);
+    }
+
+    public void DeployEnemyFleet()
+    {
+        List<int> enemyTilesWithShips = new List<int>();
+        for (int x = 0; x < 5; x++)
+        {
+            int index = GetUnusedRandomNumber(enemyTilesWithShips);
+            GameObject enemyShip = Instantiate(_ship, _enemyTileList[index].transform.position, Quaternion.identity, _enemyTileList[index].transform);
+            enemyShip.SetActive(false);
+            _enemyShipCount++;
+        }
     }
 
     // Need to create a ship prefab

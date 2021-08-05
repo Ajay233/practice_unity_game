@@ -13,21 +13,26 @@ public class EnemyTile : Tile
     private void OnMouseDown()
     {
         Debug.Log("TEST ENEMY TILE");
-        if (_gameManager.IsPlayerTurn() && !HasMiss())
+        if (_gameManager.IsPlayerTurn() && !HasMissOrHit())
         {
             _gameManager.PlayerMove(this.gameObject);
         }
     }
 
-    private bool HasMiss()
+    private bool HasMissOrHit()
     {
         if (transform.childCount == 0)
         {
             return false;
         } else
         {
-            return transform.GetChild(0).gameObject.tag == "Miss";
+            if (transform.childCount == 2)
+            {
+                return true;
+            } else
+            {
+                return transform.GetChild(0).gameObject.tag == "Miss";
+            }
         }
     }
-
 }

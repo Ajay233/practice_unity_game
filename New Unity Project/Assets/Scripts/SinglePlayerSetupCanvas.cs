@@ -28,6 +28,7 @@ public class SinglePlayerSetupCanvas : MonoBehaviour
     {
         _gameManager.ToggleStartGame();
         _gameManager.ToggleTurn();
+        transform.GetChild(3).gameObject.SetActive(false);
         //transform.GetComponent<AudioSource>().Play();
         HidePlayButton();
     }
