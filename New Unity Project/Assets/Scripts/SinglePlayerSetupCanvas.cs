@@ -7,6 +7,21 @@ public class SinglePlayerSetupCanvas : MonoBehaviour
 {
     private Transform _playButton;
     private GameManager _gameManager;
+    private SinglePlayerSetupCanvas _singlePlayerSetupCanvas;
+    private GameObject _gameOverPanel;
+
+    //private void Awake()
+    //{
+    //    if (_singlePlayerSetupCanvas == null)
+    //    {
+    //        _singlePlayerSetupCanvas = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    } else
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
+
     public void Start()
     {
         _playButton = transform.GetChild(0);
@@ -20,6 +35,12 @@ public class SinglePlayerSetupCanvas : MonoBehaviour
         {
             Debug.LogError("Unable to find GameManager");
         }
+
+        _gameOverPanel = transform.GetChild(8).gameObject;
+        if (_gameOverPanel == null)
+        {
+            Debug.LogError("Unable to find the Game Over panel");
+        }
     }
 
     
@@ -27,7 +48,7 @@ public class SinglePlayerSetupCanvas : MonoBehaviour
     public void GoToNextScene()
     {
         _gameManager.ToggleStartGame();
-        _gameManager.ToggleTurn();
+        _gameManager.ToggleTurn(true);
         transform.GetChild(3).gameObject.SetActive(false);
         //transform.GetComponent<AudioSource>().Play();
         HidePlayButton();
@@ -42,4 +63,35 @@ public class SinglePlayerSetupCanvas : MonoBehaviour
     {
         _playButton.gameObject.SetActive(false);
     }
+
+    public void BackToMainMenu()
+    {
+        SceneManager.LoadScene(0);
+        _gameManager.ResetGame();
+    }
+
+    public void PlayAgain()
+    {
+        SceneManager.LoadScene(1);
+        _gameManager.ResetGame();
+    }
+
+    public void ShowGameOverButtons()
+    {
+        transform.GetChild(6).gameObject.SetActive(true);
+        transform.GetChild(7).gameObject.SetActive(true);
+    }
+
+    public void ShowGameOverPanel()
+    {
+        if (_gameManager.PlayerHasWon())
+        {
+            _gameOverPanel.transform.GetChild(0).gameObject.SetActive(true);
+        } else
+        {
+            _gameOverPanel.transform.GetChild(1).gameObject.SetActive(true);
+        }
+        _gameOverPanel.SetActive(true);
+    }
+
 }

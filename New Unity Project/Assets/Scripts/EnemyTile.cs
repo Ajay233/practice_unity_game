@@ -13,7 +13,7 @@ public class EnemyTile : Tile
     private void OnMouseDown()
     {
         Debug.Log("TEST ENEMY TILE");
-        if (_gameManager.IsPlayerTurn() && !HasMissOrHit())
+        if (_gameManager.GameStarted() && _gameManager.IsPlayerTurn() && !HasMissOrHit())
         {
             _gameManager.PlayerMove(this.gameObject);
         }

@@ -22,17 +22,17 @@ public class GameManager : MonoBehaviour
     bool _gameStart = false;
     private bool _playerTurn = false;
 
-    private void Awake()
-    {
-        if (_gameManager == null)
-        {
-            _gameManager = this;
-            DontDestroyOnLoad(gameObject);
-        } else
-        {
-            Destroy(gameObject);
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (_gameManager == null)
+    //    {
+    //        _gameManager = this;
+    //        DontDestroyOnLoad(gameObject);
+    //    } else
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 
     void Start()
     {
@@ -169,9 +169,12 @@ public class GameManager : MonoBehaviour
         EnemyMove();
     }
 
-    IEnumerator EnemyBoardRoutine()
+    IEnumerator EnemyBoardRoutine(bool firstGo)
     {
-        yield return new WaitForSeconds(1.5f);
+        if (!firstGo)
+        {
+            yield return new WaitForSeconds(1.5f);
+        } 
         _playerTurnTransition.PlayTransition();
         yield return new WaitForSeconds(2f);
         _singlePlayerSetupCanvasVar.transform.GetChild(4).gameObject.SetActive(true);
@@ -180,7 +183,7 @@ public class GameManager : MonoBehaviour
         _EnemyBoard.SetActive(true);
     }
 
-    public void ToggleTurn()
+    public void ToggleTurn(bool firstGo)
     {
         if (_playerTurn == true)
         {
@@ -189,7 +192,7 @@ public class GameManager : MonoBehaviour
         } else
         {
             _playerTurn = true;
-            StartCoroutine(EnemyBoardRoutine());
+            StartCoroutine(EnemyBoardRoutine(firstGo));
         }
 
         Debug.Log("Player turn set to: " + _playerTurn);
@@ -202,28 +205,14 @@ public class GameManager : MonoBehaviour
 
     void CheckGameOver()
     {
-        if(_playerShipCount == 0)
+        if (_playerShipCount == 0 || _enemyShipCount == 0)
         {
-            PlayerLose();
-        } else if (_enemyShipCount == 0)
-        {
-            PlayerWin();
+            _gameStart = false;
+            _singlePlayerSetupCanvasVar.ShowGameOverPanel();
         } else
         {
-            ToggleTurn();
+            ToggleTurn(false);
         }
-    }
-
-    void PlayerLose()
-    {
-        _gameStart = false;
-        _singlePlayerSetupCanvasVar.transform.GetChild(1).gameObject.SetActive(true);
-    }
-
-    void PlayerWin()
-    {
-        _gameStart = false;
-        _singlePlayerSetupCanvasVar.transform.GetChild(2).gameObject.SetActive(true);
     }
 
     public void DeployEnemyFleet()
@@ -233,47 +222,24 @@ public class GameManager : MonoBehaviour
         {
             int index = GetUnusedRandomNumber(enemyTilesWithShips);
             GameObject enemyShip = Instantiate(_ship, _enemyTileList[index].transform.position, Quaternion.identity, _enemyTileList[index].transform);
-            enemyShip.SetActive(false);
+            //enemyShip.SetActive(false);
             _enemyShipCount++;
         }
     }
 
-    // Need to create a ship prefab
-    // Add a serialized field for ship and drag in the ship prefab
+    public void ResetGame()
+    {
+        _playerTurn = false;
+        _playerTileList = new List<GameObject>();
+        _enemyTileList = new List<GameObject>();
+        _playerTilesAttacked = new List<int>();
+        _playerShipCount = 0;
+        _enemyShipCount = 0;
+    }
 
+    public bool PlayerHasWon()
+    {
+        return _enemyShipCount == 0;
+    }
 
-    // PLAYER SETUP
-
-    // Player must click 5 squares - done
-
-    // Each time a player clicks a square && player has not clicked 5 times, add ship prefab as a child - done
-
-    // If a player clicks a square that has a ship prefab child, remove the ship prefab child & increase 
-    // number of clicks allowed by one - done
-
-    // Disable button until player has applied ships to 5 squares - done
-
-
-
-    //ENEMY SETUP
-
-    // pick a random square index between 0-24 and place a ship prefab, repeat 5 times
-
-
-
-    //GAMEPLAY
-
-    // Enemy selects random tile || Player clicks on a tile
-    // Move camera and zoom in on tile using the tile position?  Might help users to see what's happenin better
-    // Check if tile has a ship
-    // If tile has a ship, either destroy child and play animation or replace image and play animation
-    // If tile does not have a ship, replace tile img source with one showing a miss
-    // continuously check if player ships is greater than 0, if yes, show: game over, you lose 
-    // continuously check if enemy ships is greater than 0, if yes, show: you win
-
-
-    //PLAY AGAIN
-
-    // Need to reset all variables
-    // Take the user back to player set up
 }

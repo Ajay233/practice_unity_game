@@ -16,7 +16,8 @@ public class TransitionManager : MonoBehaviour
         {
             _transitionManager = this;
             DontDestroyOnLoad(gameObject);
-        } else
+        }
+        else
         {
             Destroy(gameObject);
         }
@@ -24,9 +25,6 @@ public class TransitionManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("About to start on scene: " + SceneManager.GetActiveScene().buildIndex);
-        _scene = SceneManager.GetActiveScene();
-        _sceneIndex = _scene.buildIndex;
         _transitionAnimator = gameObject.GetComponent<Animator>();
         if (_transitionAnimator == null)
         {
@@ -34,18 +32,11 @@ public class TransitionManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+   public IEnumerator TransitionToNextScene(int sceneIndex)
     {
-        if (SceneManager.GetActiveScene().buildIndex > _sceneIndex)
-        {
-            _sceneIndex = SceneManager.GetActiveScene().buildIndex;
-            StartCoroutine(TransitionIntoScene());
-        }
-    }
-
-   IEnumerator TransitionIntoScene()
-    {
+        _transitionAnimator.SetTrigger("OnSceneLeave");
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(sceneIndex);
         _transitionAnimator.SetTrigger("OnSceneEnter");
         _transitionAnimator.ResetTrigger("OnSceneLeave");
         yield return new WaitForSeconds(3);
