@@ -9,6 +9,7 @@ public class MainMenu : MonoBehaviour
     private AudioSource _audioSource;
     private AudioSource _canvasAudio;
     private Animator _transitionAnimator;
+    private TransitionManager _transitionManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,24 +25,17 @@ public class MainMenu : MonoBehaviour
             Debug.LogError("Unable to find canvas Audio Source");
         }
 
-        _transitionAnimator = GameObject.Find("TransitionManager").GetComponent<Animator>();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
+        _transitionManager = GameObject.Find("TransitionManager").GetComponent <TransitionManager>();
+        if (_transitionManager == null)
+        {
+            Debug.LogError("Unable to find TransitionManager");
+        }
 
     }
 
     public void SinglePlayer()
     {
-        StartCoroutine(GoToNextScene());
-    }
-
-    public void TempButton()
-    {
-        StartCoroutine(GoToNextSceneV2());
+        StartCoroutine(_transitionManager.TransitionToNextScene(1));
     }
 
     public void MultiPlayer()
@@ -56,19 +50,5 @@ public class MainMenu : MonoBehaviour
         _audioSource.Play();
         yield return new WaitForSeconds(3.2f);
         _canvasAudio.Play();
-    }
-
-    IEnumerator GoToNextScene()
-    {
-        _transitionAnimator.SetTrigger("OnSceneLeave");
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(1);
-    }
-
-    IEnumerator GoToNextSceneV2()
-    {
-        _transitionAnimator.SetTrigger("OnSceneLeave");
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(3);
     }
 }
