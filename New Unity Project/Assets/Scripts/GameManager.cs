@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _playerBoard;
     [SerializeField] private GameObject _EnemyBoard;
     [SerializeField] private GameObject _ship;
+    [SerializeField] private GameObject _krispin;
     [SerializeField] private int _shipLimit;
     [SerializeField] GameObject _missedPrefab;
     [SerializeField] GameObject _hitPrefab;
@@ -149,6 +150,7 @@ public class GameManager : MonoBehaviour
         } else
         {
             _gameStart = true;
+            PlaceKrispin(_playerTileList);
         }
     }
 
@@ -225,6 +227,7 @@ public class GameManager : MonoBehaviour
             //enemyShip.SetActive(false);
             _enemyShipCount++;
         }
+        PlaceKrispin(_enemyTileList);
     }
 
     public void ResetGame()
@@ -241,5 +244,29 @@ public class GameManager : MonoBehaviour
     {
         return _enemyShipCount == 0;
     }
+
+    void PlaceKrispin(List<GameObject> tileList)
+    {
+        List<int> numsToAvoid = new List<int>();
+        bool krispinPlaced = false;
+        while (krispinPlaced == false)
+        {
+            int num = GetUnusedRandomNumber(numsToAvoid);
+            if (tileList[num].transform.childCount == 0)
+            {
+                GameObject krispinPrefab = Instantiate(_krispin, tileList[num].transform.position, Quaternion.identity, tileList[num].transform);
+                //krispinPrefab.SetActive(false);
+                krispinPlaced = true;
+            }
+        }
+
+    }
+
+    // select a random number between 0-36
+    // check the board to see if there is a ship on that tile
+    // if there is repeat the process
+    // if there isn't place Krispin and setActive to false
+
+
 
 }

@@ -1127,6 +1127,12 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
         type: 3}
+      propertyPath: _krispin
+      value: 
+      objectReference: {fileID: 5334915879840952615, guid: de3f5b89a4be8534f873dcc116cfab1f,
+        type: 3}
+    - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
+        type: 3}
       propertyPath: whatever
       value: 
       objectReference: {fileID: 1505428707771263087, guid: 79a54276f8713f746b39dc040b3e961e,
