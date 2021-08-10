@@ -9,6 +9,7 @@ TagManager:
   - Ship
   - EnemyBoard
   - PlayerBoard
+  - Krispin
   layers:
   - Default
   - TransparentFX
