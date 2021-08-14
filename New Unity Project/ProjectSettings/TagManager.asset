@@ -10,6 +10,8 @@ TagManager:
   - EnemyBoard
   - PlayerBoard
   - Krispin
+  - KrispinPlaceholder
+  - Skull
   layers:
   - Default
   - TransparentFX
