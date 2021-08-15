@@ -1127,6 +1127,18 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
         type: 3}
+      propertyPath: _skull
+      value: 
+      objectReference: {fileID: 8605805056295216264, guid: 36474e8f00a73624688dea925227884e,
+        type: 3}
+    - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
+        type: 3}
+      propertyPath: _krispin
+      value: 
+      objectReference: {fileID: 5334915879840952615, guid: de3f5b89a4be8534f873dcc116cfab1f,
+        type: 3}
+    - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
+        type: 3}
       propertyPath: whatever
       value: 
       objectReference: {fileID: 1505428707771263087, guid: 79a54276f8713f746b39dc040b3e961e,
@@ -1157,6 +1169,12 @@ PrefabInstance:
       propertyPath: _missedPrefab
       value: 
       objectReference: {fileID: 2313505415119116040, guid: 4b7ab12dae68bd94f819e0679f9c072c,
+        type: 3}
+    - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
+        type: 3}
+      propertyPath: _krispinPlaceholder
+      value: 
+      objectReference: {fileID: 6600466619754480835, guid: cdac468e1dad4464e915b0d50d4081b6,
         type: 3}
     - target: {fileID: 4893740119909514129, guid: 5fbe2ed40a7744748999ac848f651319,
         type: 3}

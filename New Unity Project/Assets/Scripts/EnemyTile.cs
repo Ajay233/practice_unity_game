@@ -13,13 +13,13 @@ public class EnemyTile : Tile
     private void OnMouseDown()
     {
         Debug.Log("TEST ENEMY TILE");
-        if (_gameManager.GameStarted() && _gameManager.IsPlayerTurn() && !HasMissOrHit())
+        if (_gameManager.GameStarted() && _gameManager.IsPlayerTurn() && !HasMissOrHitOrSkull())
         {
             _gameManager.PlayerMove(this.gameObject);
         }
     }
 
-    private bool HasMissOrHit()
+    private bool HasMissOrHitOrSkull()
     {
         if (transform.childCount == 0)
         {
@@ -31,7 +31,7 @@ public class EnemyTile : Tile
                 return true;
             } else
             {
-                return transform.GetChild(0).gameObject.tag == "Miss";
+                return transform.GetChild(0).gameObject.tag == "Miss" || transform.GetChild(0).gameObject.tag == "Skull";
             }
         }
     }

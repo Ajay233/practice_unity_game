@@ -9,6 +9,9 @@ TagManager:
   - Ship
   - EnemyBoard
   - PlayerBoard
+  - Krispin
+  - KrispinPlaceholder
+  - Skull
   layers:
   - Default
   - TransparentFX
